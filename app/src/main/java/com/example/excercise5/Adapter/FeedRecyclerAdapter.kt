@@ -15,7 +15,7 @@ class FeedRecyclerAdapter(private val postList: ArrayList<Post>): RecyclerView.A
     override fun onBindViewHolder(holder: PostHolder, position: Int) {
         holder.binding.recyclerEmailText.text = postList.get(position).email
         holder.binding.recyclerCommentText.text = postList.get(position).comment
-
+        Picasso.get().load(postList.get(positon).downloadUrl).into(holder.binding.recyclerImageView)
     }
 
     override fun getItemCount(): Int {

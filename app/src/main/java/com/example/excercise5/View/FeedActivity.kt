@@ -16,6 +16,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 
 class FeedActivity : AppCompatActivity() {
@@ -40,13 +41,15 @@ class FeedActivity : AppCompatActivity() {
     }
 
     private fun getData(){
-        db.collection("Posts").addSnapshotListener { value, error ->
+        db.collection("Posts").orderBy("date", Query.Direction.DESCENDING).addSnapshotListener { value, error ->
             if (error != null){
                 Toast.makeText(this,error.localizedMessage, Toast.LENGTH_LONG).show()
             }else{
                 if (value!= null){
                     if(!value.isEmpty){
                         val documents  = value.documents
+                        postArrayList.clear()
+
                         for (document in documents){
                             val comment = document.get("comment") as String
                             val useremail = document.get("useremail") as String
