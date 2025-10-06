@@ -1,7 +1,6 @@
-package com.example.excercise5
+package com.example.excercise5.View
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -9,7 +8,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +16,7 @@ import androidx.core.content.ContextCompat
 import com.example.excercise5.databinding.ActivityUploadBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -54,6 +53,23 @@ class UploadActivity : AppCompatActivity() {
 
         if(selectedPicture != null){
             imageReference.putFile(selectedPicture!!).addOnSuccessListener {
+                val uploadPictureReferences = storage.reference.child("images").child(imageName)
+                uploadPictureReferences.downloadUrl.addOnSuccessListener { val downloadUrl = it.toString()
+                    val postMap = hashMapOf<String,Any>()
+                    if(auth.currentUser != null){
+                        postMap.put("downloadUrl", downloadUrl)
+                        postMap.put("userEmail", auth.currentUser!!.email!!)
+                        postMap.put("comment", binding.commentText.text.toString())
+                        postMap.put("date", Timestamp.now())
+
+                        firestore.collection("Posts").add(postMap).addOnSuccessListener {
+                            finish()
+                        }.addOnFailureListener {
+                            Toast.makeText(this,it.localizedMessage, Toast.LENGTH_LONG).show()
+                        }
+                    }
+
+                }
 
             }.addOnFailureListener {
                 Toast.makeText(this,it.localizedMessage, Toast.LENGTH_LONG).show()
