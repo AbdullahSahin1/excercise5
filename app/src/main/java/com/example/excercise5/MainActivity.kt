@@ -16,6 +16,8 @@ import com.google.firebase.auth.auth
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
+    val email = binding.emailText.text.toString()
+    val password = binding.passwordText.text.toString()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -26,16 +28,22 @@ class MainActivity : AppCompatActivity() {
 
     }
     fun signInClicked(view: View){
-
+       if(email.equals("")|| password.equals("")){
+           Toast.makeText(this@MainActivity,"Giriş için email ve ya şifrenizi doğru giriniz", Toast.LENGTH_LONG).show()
+       }else{
+           auth.signInWithEmailAndPassword(email,password).addOnSuccessListener {
+               val intent = Intent(this@MainActivity, FeedActivity::class.java)
+               startActivity(intent)
+               finish()
+           }.addOnFailureListener { Toast.makeText(this, it.localizedMessage, Toast.LENGTH_LONG).show() }
+       }
     }
     fun signUpClicked(view: View){
-        val email = binding.emailText.text.toString()
-        val password = binding.passwordText.text.toString()
-
         if (email.equals("") || password.equals("")){
             Toast.makeText(this@MainActivity,"Email ve ya Şifre hatalı", Toast.LENGTH_LONG).show()
         }else{
             auth.createUserWithEmailAndPassword(email,password).addOnSuccessListener {
+                println("ok")
                 val intent= Intent(this@MainActivity, FeedActivity::class.java)
                 startActivity(intent)
                 finish()
