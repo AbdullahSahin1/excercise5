@@ -6,19 +6,21 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.firebase.Firebase
 
-class MainActivity : AppCompatActivity() {
+
+class UploadActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_upload)
+    }
+
+
+    fun upload(view: View){
 
     }
-    fun signInClicked(view: View){
 
-    }
-    fun signUpClicked(view: View){
+    fun selectImage(view: View){
 
     }
 }
