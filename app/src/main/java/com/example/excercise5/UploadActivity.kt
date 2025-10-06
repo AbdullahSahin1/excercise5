@@ -4,15 +4,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.excercise5.databinding.ActivityUploadBinding
 
 
 class UploadActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityUploadBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_upload)
+        binding = ActivityUploadBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
     }
 
 
